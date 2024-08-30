@@ -16,5 +16,8 @@
     "eslint-config-dicodingacademy": "^0.9.4",
     "globals": "^15.9.0",
     "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^21.3.10"
   }
 }
