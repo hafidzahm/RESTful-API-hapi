@@ -1,5 +1,6 @@
 const { nanoid } = require('nanoid');
 const notes = require('./notes');
+
 const addNoteHandler = (request, h) => {
   const { title, tags, body } = request.payload;
   const id = nanoid(16);
@@ -77,4 +78,46 @@ const getNoteByIdHandler = (request, h) => {
   
 };
 
-module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler };
+const editNoteByIdHandler = (request, h) => {
+  const { id } = request.params;
+  const { title, tags, body } = request.payload;
+
+  const updatedAt = new Date().toISOString()
+
+  //Pertama, dapatkan dulu index array pada objek catatan sesuai id yang ditentukan. 
+  //Untuk melakukannya, gunakanlah method array findIndex().
+
+  const index = notes.findIndex((note) => note.id === id);
+
+  //Bila note dengan id yang dicari ditemukan, maka index akan bernilai array index dari objek catatan yang dicari. 
+  //Namun bila tidak ditemukan, maka index bernilai -1. 
+  //Jadi, kita bisa menentukan gagal atau tidaknya permintaan dari nilai index menggunakan if else.
+
+  if (index !== -1) {
+    notes[index] = {
+      ...notes[index],
+      title,
+      tags,
+      body,
+      updatedAt,
+    };
+
+    const response = h.response({
+      status: 'success',
+      message: 'Catatan berhasil diperbarui',
+    });
+    
+    response.code(200);
+    return response;
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Gagal memberbarui catatan. Id tidak ditemukan',
+  });
+  response.code(404);
+  return response
+
+};
+
+module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler, editNoteByIdHandler };
