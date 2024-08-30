@@ -120,4 +120,30 @@ const editNoteByIdHandler = (request, h) => {
 
 };
 
-module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler, editNoteByIdHandler };
+const deleteNoteByIdHandler = (request, h) => {
+  const { id } = request.params;
+  //Selanjutnya, dapatkan index dari objek catatan sesuai dengan id yang didapat.
+  const index = notes.findIndex((note) => note.id === id);
+  //Lakukan pengecekan terhadap nilai index, pastikan nilainya tidak -1 bila hendak menghapus catatan. 
+  // untuk menghapus data pada array berdasarkan index, gunakan method array splice().
+  if (index !== -1) {
+    notes.splice(index, 1);
+    const response = h.response({
+      status: 'success',
+      message: 'Catatan berhasil dihapus',
+    });
+    response.code(200);
+    return response;
+  }
+
+ // Bila index bernilai -1, maka kembalikan handler dengan respons gagal.
+
+ const response = h.response({
+  status: 'fail',
+  message: 'Catatan gagal dihapus. Id tidak ditemukan',
+ });
+ response.code(404);
+ return response
+};
+
+module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler, editNoteByIdHandler, deleteNoteByIdHandler };
