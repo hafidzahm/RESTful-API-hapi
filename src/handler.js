@@ -52,7 +52,7 @@ const getNoteByIdHandler = (request, h) => {
   //Setelah mendapatkan nilai id, dapatkan objek note dengan id tersebut dari objek array notes. 
   //Manfaatkan method array filter() untuk mendapatkan objeknya.
 
-  const note = notes.filter((n) => n.id === id[0]);
+  const note = notes.filter((n) => n.id === id)[0];
   //Kita kembalikan fungsi handler dengan data beserta objek note di dalamnya. 
   //Namun sebelum itu, pastikan dulu objek note tidak bernilai undefined. 
   //Bila undefined, kembalikan dengan respons 
