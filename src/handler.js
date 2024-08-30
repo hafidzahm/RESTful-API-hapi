@@ -47,4 +47,34 @@ const getAllNotesHandler = () => ({
   },
 });
 
-module.exports = { addNoteHandler, getAllNotesHandler };
+const getNoteByIdHandler = (request, h) => {
+  const { id } = request.params;
+  //Setelah mendapatkan nilai id, dapatkan objek note dengan id tersebut dari objek array notes. 
+  //Manfaatkan method array filter() untuk mendapatkan objeknya.
+
+  const note = notes.filter((n) => n.id === id[0]);
+  //Kita kembalikan fungsi handler dengan data beserta objek note di dalamnya. 
+  //Namun sebelum itu, pastikan dulu objek note tidak bernilai undefined. 
+  //Bila undefined, kembalikan dengan respons 
+  
+  if (note !== undefined) {
+    return {
+      status: 'success',
+      data: {
+        note,
+      },
+    }
+  }
+
+    const response = h.response({
+      status: 'fail',
+      message: 'Catatan tidak ditemukan'
+    });
+    response.code(404);
+    return response
+
+
+  
+};
+
+module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler };
